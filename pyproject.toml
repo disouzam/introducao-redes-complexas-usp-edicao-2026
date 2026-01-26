@@ -5,6 +5,7 @@ description = "Contém código escrito para acompanhar a disciplina de Introduç
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "marimo>=0.19.6",
     "matplotlib>=3.10.8",
     "networkx>=3.6.1",
 ]
