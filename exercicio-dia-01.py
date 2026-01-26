@@ -8,32 +8,60 @@ app = marimo.App(width="full")
 def _():
     import marimo as mo
     import pandas as pd
-    return (pd,)
+    return mo, pd
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Criação da tabela de probabilidades
+    """)
+    return
 
 
 @app.cell
 def _(pd):
-    # Criação da tabela de probabilidades
     distribuicao_probs = [0, 0.08, 0.16, 0.21, 0.18, 0.16, 0.10, 0.06, 0.03, 0.01, 0.01]
 
     distribuicao_probs_series = pd.Series(distribuicao_probs, name="Probabilidade do grau k")
     distribuicao_probs_series.index.name="k"
-
-    print(distribuicao_probs_series)
+    distribuicao_probs_series
     return (distribuicao_probs_series,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Soma das probabilidades
+    """)
+    return
 
 
 @app.cell
 def _(distribuicao_probs_series):
-    # Soma das probabilidades
     total = distribuicao_probs_series.sum()
     print(f"A soma de P(0) + P(1) + P(2) + ... é igual a {total} como esperado para um espaço de probabilidades completo.") 
+    return (total,)
+
+
+@app.cell(hide_code=True)
+def _(mo, total):
+    mo.md(f"""
+    ## A soma de P(0) + P(1) + P(2) + ... é igual a **{total}** como esperado para um espaço de probabilidades completo.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Valor esperado (aka média) - Preparação
+    """)
     return
 
 
 @app.cell
 def _(distribuicao_probs_series, pd):
-    # Valor esperado (aka média) - Preparação
     distribuicao_probs_df = pd.DataFrame(distribuicao_probs_series)
 
     # Replicação do índice para a criação de uma coluna auxiliar
@@ -45,11 +73,26 @@ def _(distribuicao_probs_series, pd):
     return (distribuicao_probs_df,)
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Valor esperado (aka média)
+    """)
+    return
+
+
 @app.cell
 def _(distribuicao_probs_df):
-    # Valor esperado (aka média)
     valor_esperado = distribuicao_probs_df["P(k)*k"].sum()
     print(f"O valor esperado (aka média) para o número de graus é igual {valor_esperado}.")
+    return (valor_esperado,)
+
+
+@app.cell(hide_code=True)
+def _(mo, valor_esperado):
+    mo.md(f"""
+    ## O valor esperado (aka média) para o número de graus é igual **{valor_esperado}**.
+    """)
     return
 
 
