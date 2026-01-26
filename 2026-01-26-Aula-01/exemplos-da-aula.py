@@ -7,7 +7,7 @@ app = marimo.App(width="full")
 @app.cell
 def _():
     import marimo as mo
-    return
+    return (mo,)
 
 
 @app.cell
@@ -18,9 +18,21 @@ def _():
 
 
 @app.cell
-def _():
+def _(mo):
+    node_slider = mo.ui.slider(start=1, stop=100, label="Número de nós para o grafo", value=10)
+    return (node_slider,)
+
+
+@app.cell
+def _(mo, node_slider):
+    mo.hstack([node_slider, mo.md(f"Número de nós selecionado: {node_slider.value}")])
+    return
+
+
+@app.cell
+def _(node_slider):
     # Número de nós
-    nodes = 10
+    nodes = node_slider.value
     return (nodes,)
 
 
@@ -32,12 +44,13 @@ def _(nodes, nx):
 
 
 @app.cell
-def _(G, nodes, nx, plt):
+def _(G, mo, nodes, nx, plt):
     # Desenhar o grafo
-    plt.figure(figsize=(6,6))
+    plt.figure(figsize=(4,4))
     nx.draw(G, with_labels=True, node_color='lightblue', edge_color='gray', node_size=700, font_size=12)
     plt.title(f"Grafo completo com {nodes} nós")
-    plt.show()
+
+    mo.mpl.interactive(plt.gcf())
     return
 
 
