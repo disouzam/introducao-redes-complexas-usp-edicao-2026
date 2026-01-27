@@ -30,22 +30,29 @@ def _(mo):
 @app.cell
 def _(mo):
     node_slider = mo.ui.slider(start=1, stop=100, label="Número de nós para o grafo", value=10)
-    return (node_slider,)
+
+    probability_slider = mo.ui.slider(start=0, stop=1, step=0.1, label="Probabilidade de formar uma aresta", value=0.5)
+    return node_slider, probability_slider
 
 
 @app.cell
-def _(mo, node_slider):
-    mo.hstack([node_slider, mo.md(f"Número de nós selecionado: {node_slider.value}")])
+def _(mo, node_slider, probability_slider):
+    mo.vstack(
+        [
+            mo.hstack([node_slider, mo.md(f"Número de nós selecionado: {node_slider.value}")]),
+            mo.hstack([probability_slider, mo.md(f"Probabilidade selecionada: {probability_slider.value}")])
+        ]
+    )
     return
 
 
 @app.cell
-def _(node_slider):
+def _(node_slider, probability_slider):
     # Número de nós
     nodes = node_slider.value
 
     # Probabilidade fixa de conexão entre nos 
-    p = 0.5
+    p = probability_slider.value
     return nodes, p
 
 
