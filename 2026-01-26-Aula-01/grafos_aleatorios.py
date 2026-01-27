@@ -95,7 +95,13 @@ def _(G, plt):
     plt.xlabel('Grau')
     plt.ylabel('Frequência')
     plt.title('Histograma do grau dos nós')
-    plt.xticks(range(0, max(graus) + 1))
+
+    xticks = range(0, max(graus) + 1)
+
+    if len(xticks) > 10:
+        xticks = range(0, max(graus) + 1, 5)
+
+    plt.xticks(xticks)
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.show()
     return
