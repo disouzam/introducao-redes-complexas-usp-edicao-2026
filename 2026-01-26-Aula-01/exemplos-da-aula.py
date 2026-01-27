@@ -66,5 +66,28 @@ def _(G, mo, nodes, nx, plt):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Histograma do grau dos nós
+    """)
+    return
+
+
+@app.cell
+def _(G, plt):
+    graus = [d for n, d in G.degree()]
+
+    plt.figure(figsize=(6,4))
+    plt.hist(graus, bins=range(0 , max(graus) + 2), color='blue', alpha=0.7, edgecolor='black', density=True)
+    plt.xlabel('Grau')
+    plt.ylabel('Frequência')
+    plt.title('Histograma do grau dos nós')
+    plt.xticks(range(0, max(graus)+ 1))
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.show()
+    return
+
+
 if __name__ == "__main__":
     app.run()
