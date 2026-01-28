@@ -9,5 +9,6 @@ dependencies = [
     "matplotlib>=3.10.8",
     "networkx>=3.6.1",
     "pandas>=3.0.0",
+    "ruff>=0.14.14",
     "scipy>=1.17.0",
 ]
