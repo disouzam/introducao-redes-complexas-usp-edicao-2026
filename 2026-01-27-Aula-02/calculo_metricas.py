@@ -70,7 +70,15 @@ def _(criar_gerador_numeros_aleatorios, nx):
                     G.add_edge(i, j)
 
         return G
-    return criar_grafo_aleatorio, criar_grafo_completo
+
+
+    def criar_grafo_watts_strogatz(n, k, p):
+        return nx.watts_strogatz_graph(n, k, p)
+    return (
+        criar_grafo_aleatorio,
+        criar_grafo_completo,
+        criar_grafo_watts_strogatz,
+    )
 
 
 @app.cell
@@ -125,6 +133,24 @@ def _(
     print(
         f"Coeficiente de aglomeração médio do grafo aleatório: {calcular_coeficiente_aglomeracao_medio(grafo_aleatorio)}"
     )
+    return
+
+
+@app.cell
+def _(
+    calcular_caminho_minimo_medio,
+    calcular_coeficiente_aglomeracao_medio,
+    criar_grafo_watts_strogatz,
+    nos_referencia,
+):
+    watts_strogatz = criar_grafo_watts_strogatz(nos_referencia, 4, 0.2)
+    print(
+        f"Caminho minimo medio do grafo de Watts-Strogatz: {calcular_caminho_minimo_medio(watts_strogatz):.4f}"
+    )
+    print(
+        f"Coeficiente de aglomeração médio do grafo de Watts-Strogatz: {calcular_coeficiente_aglomeracao_medio(watts_strogatz)}"
+    )
+
     return
 
 
