@@ -29,9 +29,9 @@ def _(mo):
 
 @app.cell
 def _(mo):
-    node_slider = mo.ui.slider(start=1, stop=100, label="Número de nós para o grafo", value=10)
+    node_slider = mo.ui.slider(start=1, stop=10000, label="Número de nós para o grafo", value=1000)
 
-    probability_slider = mo.ui.slider(start=0, stop=1, step=0.1, label="Probabilidade de formar uma aresta", value=0.5)
+    probability_slider = mo.ui.slider(start=0, stop=1, step=0.0001, label="Probabilidade de formar uma aresta", value=0.005)
     return node_slider, probability_slider
 
 
@@ -80,7 +80,7 @@ def _(gerar_grafo_aleatorio, mo, nodes, nx, p, plt):
     plt.figure(figsize=(4,4))
     nx.draw(G, with_labels=True, node_color='lightblue', edge_color='gray', node_size=700, font_size=12)
     plt.title(f"Grafo aleatório com {nodes} nós (p={p}")
-
+    plt.show()
     mo.mpl.interactive(plt.gcf())
     return (G,)
 
