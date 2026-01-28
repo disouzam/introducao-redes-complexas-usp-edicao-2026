@@ -28,12 +28,13 @@ def _(mo):
 def _():
     import networkx as nx
     import matplotlib.pyplot as plt
-    return nx, plt
+    import numpy as np
+    return np, nx, plt
 
 
 @app.cell
 def _(mo):
-    node_slider = mo.ui.slider(start=1, stop=100, label="Número de nós para o grafo", value=10)
+    node_slider = mo.ui.slider(start=1, stop=100000, label="Número de nós para o grafo", value=1000)
     return (node_slider,)
 
 
@@ -60,8 +61,8 @@ def _(nodes, nx):
 @app.cell
 def _(G, mo, nodes, nx, plt):
     # Desenhar o grafo
-    plt.figure(figsize=(4,4))
-    nx.draw(G, with_labels=True, node_color='lightblue', edge_color='gray', node_size=700, font_size=12)
+    plt.figure(figsize=(4, 4))
+    nx.draw(G, with_labels=True, node_color="lightblue", edge_color="gray", node_size=700, font_size=12)
     plt.title(f"Grafo completo com {nodes} nós")
 
     mo.mpl.interactive(plt.gcf())
@@ -77,16 +78,34 @@ def _(mo):
 
 
 @app.cell
-def _(G, plt):
+def _(G, np, plt):
     graus = [d for n, d in G.degree()]
 
-    plt.figure(figsize=(6,4))
-    plt.hist(graus, bins=range(0 , max(graus) + 2), color='blue', alpha=0.7, edgecolor='black', density=True)
-    plt.xlabel('Grau')
-    plt.ylabel('Frequência')
-    plt.title('Histograma do grau dos nós')
-    plt.xticks(range(0, max(graus)+ 1))
-    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.figure(figsize=(6, 4))
+
+    bins = np.arange(-0.5, max(graus) + 2.5)
+    plt.hist(graus, bins=bins, color="blue", alpha=0.7, edgecolor="black", density=True, align="mid")
+    plt.xlabel("Grau")
+    plt.ylabel("Frequência")
+    plt.title("Histograma do grau dos nós")
+
+    step = 1
+    factors = [1, 2, 5, 10]
+    xticks = np.arange(-0.5, max(graus) + 2.5, step=step)
+
+    base_step = step
+    while len(xticks) > 10:
+        for factor in factors:
+            if factor == 1:
+                base_step = step
+            step = base_step * factor
+            xticks = np.arange(-0.5, max(graus) + 2.5, step=step)
+
+            if len(xticks) <= 10:
+                break
+
+    plt.xticks(xticks)
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
     plt.show()
     return
 

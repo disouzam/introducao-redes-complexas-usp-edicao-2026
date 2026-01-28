@@ -8,9 +8,10 @@ app = marimo.App(width="full")
 def _():
     import marimo as mo
     import networkx as nx
+    import numpy as np
     import matplotlib.pyplot as plt
     import random
-    return mo, nx, plt, random
+    return mo, np, nx, plt, random
 
 
 @app.cell(hide_code=True)
@@ -94,21 +95,33 @@ def _(mo):
 
 
 @app.cell
-def _(G, plt):
+def _(G, np, plt):
     graus = [d for n, d in G.degree()]
 
     plt.figure(figsize=(6,4))
-    plt.hist(graus, bins=range(0 , max(graus) + 2), color='blue', alpha=0.7, edgecolor='black', density=True)
+    bins = np.arange(-0.5, max(graus) + 2.5)
+    plt.hist(graus, bins=bins, color="blue", alpha=0.7, edgecolor="black", density=True, align="mid")
     plt.xlabel('Grau')
     plt.ylabel('Frequência')
     plt.title('Histograma do grau dos nós')
 
-    xticks = range(0, max(graus) + 1)
+    step = 1
+    factors = [1, 2, 5, 10]
+    xticks = np.arange(-0.5, max(graus) + 2.5, step=step)
 
-    if len(xticks) > 10:
-        xticks = range(0, max(graus) + 1, 5)
+    base_step = step
+    while len(xticks) > 10:
+        for factor in factors:
+            if factor == 1:
+                base_step = step
+            step = base_step * factor
+            xticks = np.arange(-0.5, max(graus) + 2.5, step=step)
+
+            if len(xticks) <= 10:
+                break
 
     plt.xticks(xticks)
+    
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.show()
     return
